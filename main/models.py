@@ -8,7 +8,6 @@ class User(AbstractUser):
         message='Invalid phone number',
         code='invalid_number'
     ),])
-
     adress = models.CharField(max_length=50,verbose_name="manzil")
 
     class Meta(AbstractUser.Meta):
@@ -37,6 +36,9 @@ class Employee(models.Model):
         (2, "Admin"),
         (3, "Work manager")
     ))
+    class Meta:
+        verbose_name = 'Employee'
+        verbose_name_plural = 'Employee'
 
     def __str__(self):
         return self.name
@@ -45,6 +47,9 @@ class Employee(models.Model):
 class Private_room(models.Model):
     room_name = models.CharField(max_length=50, verbose_name='Hodim honasining nomi (Masalan: Kardiologiya) :')
     room_number = models.IntegerField(verbose_name='Hodim honasining raqami :')
+    class Meta:
+        verbose_name = "Private_room"
+        verbose_name_plural = 'Private_room'
 
     def __str__(self):
         return self.room_name
@@ -68,12 +73,20 @@ class Patient(models.Model):
         (2, 'Male')
     ))
 
+    class Meta:
+        verbose_name = "Patient"
+        verbose_name_plural = 'Patient'
+
     def __str__(self):
         return self.name
 
 
 class Section(models.Model):
     name = models.CharField(max_length=25, verbose_name='Bo`limi :')
+
+    class Meta:
+        verbose_name = "Section"
+        verbose_name_plural = 'Section'
 
     def __str__(self):
         return self.name
@@ -96,6 +109,10 @@ class Room(models.Model):
         (3, "Operatsiya")
     ))
 
+    class Meta:
+        verbose_name = "Room"
+        verbose_name_plural = 'Room'
+
     def __str__(self):
         return self.name
 
@@ -107,6 +124,10 @@ class Operation(models.Model):
     room = models.ForeignKey(to=Room, on_delete=models.PROTECT, verbose_name='Opertsiya honasini belgilang :')
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
+    class Meta:
+        verbose_name = "Operation"
+        verbose_name_plural = 'Operation'
+
     def __str__(self):
         return self.patient
 
@@ -117,6 +138,10 @@ class Info(models.Model):
     employee_number = models.IntegerField(default=0, verbose_name='Ishchilar soni :')
     patient_number_healing = models.IntegerField(verbose_name='Shifo topganlar soni :')
 
+    class Meta:
+        verbose_name = "Info"
+        verbose_name_plural = 'Info'
+
     def __str__(self):
         return self.name
 
@@ -125,12 +150,20 @@ class Cassa(models.Model):
     password = models.CharField(max_length=8, verbose_name='Kassa parolini kiriting :')
     balance = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Casssa balanci :')
 
+    class Meta:
+        verbose_name = "Cassa"
+        verbose_name_plural = 'Cassa'
+
 
 class Report(models.Model):
     income = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Kiruvchi mablag` :')
     expence = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Chiquvchi mablag` :')
     description = models.CharField(max_length=255, verbose_name='Hisobot :')
     date = models.DateField(auto_now=True, verbose_name='Sanasi :')
+
+    class Meta:
+        verbose_name = "Report"
+        verbose_name_plural = 'Report'
 
     def __str__(self):
         return self.date
@@ -142,6 +175,10 @@ class Queue(models.Model):
     description = models.CharField(max_length=255, verbose_name='Tasnifi :')
     created_at = models.DateTimeField(auto_now=True, verbose_name='Navbat yaratilishi :')
 
+    class Meta:
+        verbose_name = "Queue"
+        verbose_name_plural = 'Queue'
+
     def __str__(self):
         return self.doctor
 
@@ -149,6 +186,10 @@ class Queue(models.Model):
 class Attendance(models.Model):
     doctor = models.ForeignKey(to=Employee, on_delete=models.PROTECT, verbose_name='Doctorning ismi :')
     status = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "Attendance"
+        verbose_name_plural = 'Attendance'
 
     def __str__(self):
         return self.doctor
@@ -159,6 +200,10 @@ class Payment(models.Model):
     description = models.TextField(null=True, verbose_name='Tasnifi :')
     created = models.DateTimeField(auto_created=True, verbose_name='Yaratilgan :')
     cod = models.CharField(max_length=25, unique=True, verbose_name='Code :')
+
+    class Meta:
+        verbose_name = "Payment"
+        verbose_name_plural = 'Payment'
 
     def __str__(self):
         return self.patient
