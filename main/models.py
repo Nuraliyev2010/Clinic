@@ -17,7 +17,7 @@ class User(AbstractUser):
 
 
 class Employee(models.Model):
-    name = models.CharField(max_length=25)
+    name = models.CharField(max_length=25, verbose_name='Ismi :')
     phone = models.CharField(max_length=13, unique=True, blank=False, validators=[
         RegexValidator(
             regex='^[\+]9{2}8{1}[0-9]{9}$',
@@ -66,6 +66,7 @@ class Patient(models.Model):
             code='invalid_number'
         ), ])
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Bemor honasining yaratilgan vaqti :')
+    diagnos = models.CharField(max_length=100, verbose_name='Tashxisi :')
     day = models.DateField(auto_now=True, verbose_name='Bemorning honadagi kuni :')
     status_gender = models.IntegerField(blank=False, verbose_name='Bemorning jinsi :', choices=
     (
