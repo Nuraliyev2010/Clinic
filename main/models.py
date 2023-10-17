@@ -18,7 +18,7 @@ class User(AbstractUser):
 
 
 class Employee(models.Model):
-    username = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name='Hodimning foydalanuvchi nomi :')
+    name = models.CharField(max_length=25)
     phone = models.CharField(max_length=13, unique=True, blank=False, validators=[
         RegexValidator(
             regex='^[\+]9{2}8{1}[0-9]{9}$',
@@ -26,7 +26,7 @@ class Employee(models.Model):
             code='invalid_number'
         ), ])
     describtion = models.CharField(max_length=250, verbose_name='Hodimning tasnifi :', null=True, blank=True)
-    private_room = models.ForeignKey(to='Private_room', on_delete=models.SET_NULL, verbose_name='Hodimning honasi :')
+    private_room = models.ForeignKey(to='Private_room', on_delete=models.SET_NULL, verbose_name='Hodimning honasi :', null=True)
     salary = models.DecimalField(decimal_places=2, max_digits=10)
     start_time = models.DateTimeField(verbose_name='Hodimning ish boshlash vaqti :')
     end_time = models.DateTimeField(verbose_name='Hodimning ish vaqtining tugashi :')
@@ -38,14 +38,16 @@ class Employee(models.Model):
         (3, "Work manager")
     ))
 
+    def __str__(self):
+        return self.name
+
 
 class Private_room(models.Model):
     room_name = models.CharField(max_length=50, verbose_name='Hodim honasining nomi (Masalan: Kardiologiya) :')
     room_number = models.IntegerField(verbose_name='Hodim honasining raqami :')
 
-
     def __str__(self):
-        return self.room_number
+        return self.room_name
 
 
 class Patient(models.Model):
@@ -66,28 +68,36 @@ class Patient(models.Model):
         (2, 'Male')
     ))
 
+    def __str__(self):
+        return self.name
+
 
 class Section(models.Model):
     name = models.CharField(max_length=25, verbose_name='Bo`limi :')
+
+    def __str__(self):
+        return self.name
 
 class Room(models.Model):
     name = models.CharField(max_length=25, verbose_name='Honaning nomi :')
     is_free = models.BooleanField(default=True, verbose_name='Hona bo`sh / band :')
     capacity = models.IntegerField(default=0, verbose_name='Honaning sig`imi :')
     price = models.IntegerField(verbose_name='Hona narxi :')
-    section = models.ForeignKey(to=Section, on_delete=models.SET_NULL, verbose_name='Bo`limi :')
+    section = models.ForeignKey(to=Section, on_delete=models.SET_NULL, verbose_name='Bo`limi :', null=True)
     status = models.IntegerField(blank=False, verbose_name='Hona statusi :', choices=
     (
-        (1, "Patient")
+        (1, "Patient"),
         (2, "Employee")
     ))
     category = models.IntegerField(blank=False, verbose_name='Hona bo`limi :', choices=
     (
-        (1, "Lux")
-        (2, "Econom")
+        (1, "Lux"),
+        (2, "Econom"),
         (3, "Operatsiya")
     ))
 
+    def __str__(self):
+        return self.name
 
 class Operation(models.Model):
     patient = models.ForeignKey(to=Patient, on_delete=models.PROTECT, verbose_name='Bemor :')
@@ -97,12 +107,18 @@ class Operation(models.Model):
     room = models.ForeignKey(to=Room, on_delete=models.PROTECT, verbose_name='Opertsiya honasini belgilang :')
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
+    def __str__(self):
+        return self.patient
+
 
 class Info(models.Model):
     name = models.CharField(max_length=25, verbose_name="Nomi :")
     about = models.TextField(verbose_name='Klinika haqida :')
     employee_number = models.IntegerField(default=0, verbose_name='Ishchilar soni :')
     patient_number_healing = models.IntegerField(verbose_name='Shifo topganlar soni :')
+
+    def __str__(self):
+        return self.name
 
 
 class Cassa(models.Model):
@@ -116,6 +132,9 @@ class Report(models.Model):
     description = models.CharField(max_length=255, verbose_name='Hisobot :')
     date = models.DateField(auto_now=True, verbose_name='Sanasi :')
 
+    def __str__(self):
+        return self.date
+
 
 class Queue(models.Model):
     doctor = models.ManyToManyField(to=Employee)
@@ -123,14 +142,23 @@ class Queue(models.Model):
     description = models.CharField(max_length=255, verbose_name='Tasnifi :')
     created_at = models.DateTimeField(auto_now=True, verbose_name='Navbat yaratilishi :')
 
+    def __str__(self):
+        return self.doctor
+
+
 class Attendance(models.Model):
     doctor = models.ForeignKey(to=Employee, on_delete=models.PROTECT, verbose_name='Doctorning ismi :')
     status = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.doctor
 
 class Payment(models.Model):
     patient = models.ForeignKey(to=Patient, on_delete=models.CASCADE, verbose_name='Bemor :')
     total = models.IntegerField(verbose_name='Summa :')
-    description = models.TextField(null=True)
-    created = models.DateTimeField()
-    cod = models.CharField(max_length=25)
+    description = models.TextField(null=True, verbose_name='Tasnifi :')
+    created = models.DateTimeField(auto_created=True, verbose_name='Yaratilgan :')
+    cod = models.CharField(max_length=25, unique=True, verbose_name='Code :')
+
+    def __str__(self):
+        return self.patient
