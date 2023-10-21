@@ -27,9 +27,9 @@ class Employee(models.Model):
     describtion = models.CharField(max_length=250, verbose_name='Hodimning tasnifi :', null=True, blank=True)
     private_room = models.ForeignKey(to='Private_room', on_delete=models.SET_NULL, verbose_name='Hodimning honasi :', null=True)
     salary = models.DecimalField(decimal_places=2, max_digits=10)
-    start_time = models.DateTimeField(verbose_name='Hodimning ish boshlash vaqti :')
-    end_time = models.DateTimeField(verbose_name='Hodimning ish vaqtining tugashi :')
-    specialty = models.CharField(max_length=10, verbose_name='Hodimning mutaxassisligi', null=True, blank=True)
+    start_time = models.TimeField(verbose_name='Hodimning ish boshlash vaqti :')
+    end_time = models.TimeField(verbose_name='Hodimning ish vaqtining tugashi :')
+    specialty = models.CharField(max_length=250, verbose_name='Hodimning mutaxassisligi', null=True, blank=True)
     status_employee = models.IntegerField(blank=False, verbose_name='Ishchilar statusi :', choices=
     (
         (1, "Doctor"),
@@ -65,9 +65,9 @@ class Patient(models.Model):
             message='Invalid phone number',
             code='invalid_number'
         ), ])
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Bemor honasining yaratilgan vaqti :')
+    created_at = models.DateTimeField(verbose_name='Bemor honasining yaratilgan vaqti :')
     diagnos = models.CharField(max_length=100, verbose_name='Tashxisi :')
-    day = models.DateField(auto_now=True, verbose_name='Bemorning honadagi kuni :')
+    day = models.IntegerField(verbose_name='Bemorning honadagi kuni :')
     status_gender = models.IntegerField(blank=False, verbose_name='Bemorning jinsi :', choices=
     (
         (1, 'Famele'),

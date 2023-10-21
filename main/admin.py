@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import *
+from . import models
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext, gettext_lazy as _
 
 
-@admin.register(User)
+@admin.register(models.User)
 class EmployeeAdmin(UserAdmin):
     list_display = ['id','username', 'first_name', 'last_name', 'is_active']
     fieldsets = (
@@ -18,4 +18,15 @@ class EmployeeAdmin(UserAdmin):
     )
 
 
-admin.site.register(Patient)
+admin.site.register(models.Patient)
+admin.site.register(models.Employee)
+admin.site.register(models.Private_room)
+admin.site.register(models.Section)
+admin.site.register(models.Room)
+admin.site.register(models.Operation)
+admin.site.register(models.Info)
+admin.site.register(models.Cassa)
+admin.site.register(models.Report)
+admin.site.register(models.Queue)
+admin.site.register(models.Attendance)
+admin.site.register(models.Payment)
