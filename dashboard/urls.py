@@ -31,7 +31,7 @@ urlpatterns = [
 
     # CRUD Info URLs
     path('info/create/', views.CreateInformation.as_view(), name='create_information'),
-    path('info/update/<int:pk>/', views.UpdateInformation.as_view(), name='update_information'),
+    path('info/update/<int:pk>/', views.UpdateInfprmation.as_view(), name='update_information'),
     path('info/delete/<int:pk>/', views.DeleteInformation.as_view(), name='delete_information'),
 
     # CRUD Cassa URLs

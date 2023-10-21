@@ -1,11 +1,16 @@
 from rest_framework import serializers
 from .models import *
 
-
 class UserSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = "__all__"
+
+
+class PatientSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Patient
+        fields = '__all__'
 
 
 class EmployeeSerializers(serializers.ModelSerializer):
@@ -90,3 +95,5 @@ class PaymentSerializers(serializers.ModelSerializer):
         depth = 2
         model = Payment
         fields = "__all__"
+
+

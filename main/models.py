@@ -57,7 +57,7 @@ class Private_room(models.Model):
 
 class Patient(models.Model):
     name = models.CharField(max_length=25)
-    doctor = models.ManyToManyField(to=Employee, blank=True, verbose_name='Bemorning doctori :')
+    doctor = models.ForeignKey(to=Employee, on_delete=models.CASCADE, verbose_name='Bemorning doctori :')
     photo = models.ImageField(upload_to='patient/', verbose_name='Bemorning rasmi :', null=True, blank=True)
     phone = models.CharField(max_length=13, unique=True, blank=False, validators=[
         RegexValidator(
@@ -71,7 +71,7 @@ class Patient(models.Model):
     status_gender = models.IntegerField(blank=False, verbose_name='Bemorning jinsi :', choices=
     (
         (1, 'Famele'),
-        (2, 'Male')
+        (2, 'Male'),
     ))
 
     class Meta:
@@ -79,7 +79,7 @@ class Patient(models.Model):
         verbose_name_plural = 'Patient'
 
     def __str__(self):
-        return self.name
+        return self.id
 
 
 class Section(models.Model):
@@ -166,8 +166,7 @@ class Report(models.Model):
         verbose_name = "Report"
         verbose_name_plural = 'Report'
 
-    def __str__(self):
-        return self.date
+
 
 
 class Queue(models.Model):
