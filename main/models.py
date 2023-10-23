@@ -25,8 +25,10 @@ class Employee(models.Model):
             code='invalid_number'
         ), ])
     describtion = models.CharField(max_length=250, verbose_name='Hodimning tasnifi :', null=True, blank=True)
-    private_room = models.ForeignKey(to='Private_room', on_delete=models.SET_NULL, verbose_name='Hodimning honasi :', null=True)
-    salary = models.DecimalField(decimal_places=2, max_digits=10)
+    private_room = models.ForeignKey(to='Private_room', on_delete=models.CASCADE, verbose_name='Hodimning honasi :', null=True)
+    salary = models.DecimalField(decimal_places=2, max_digits=10, verbose_name='Ish haqi :')
+    section = models.CharField(max_length=25, verbose_name='Bo`limi :')
+    time = models.IntegerField(verbose_name='Hodimning jami ishlash vaqti :', default=0)
     start_time = models.TimeField(verbose_name='Hodimning ish boshlash vaqti :')
     end_time = models.TimeField(verbose_name='Hodimning ish vaqtining tugashi :')
     specialty = models.CharField(max_length=250, verbose_name='Hodimning mutaxassisligi', null=True, blank=True)
@@ -79,7 +81,7 @@ class Patient(models.Model):
         verbose_name_plural = 'Patient'
 
     def __str__(self):
-        return self.id
+        return self.created_at
 
 
 class Section(models.Model):
@@ -108,6 +110,11 @@ class Room(models.Model):
         (1, "Lux"),
         (2, "Econom"),
         (3, "Operatsiya")
+    ))
+    status_gender = models.IntegerField(blank=False, verbose_name='Hona moslashishi (Masalan: Ayol) :', choices=
+    (
+        (1, 'Famele'),
+        (2, 'Male'),
     ))
 
     class Meta:
